@@ -255,7 +255,6 @@ export default function AccountsPage() {
   const [isImporting, setIsImporting] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
-  const [accountRefreshingId, setAccountRefreshingId] = useState<string | null>(null);
   const [quotaRefreshingId, setQuotaRefreshingId] = useState<string | null>(null);
   const [accountQuotaMap, setAccountQuotaMap] = useState<Record<string, AccountQuotaResponse>>({});
   const [syncStatus, setSyncStatus] = useState<SyncStatusResponse | null>(null);
@@ -447,26 +446,6 @@ export default function AccountsPage() {
       toast.error(message);
     } finally {
       setIsRefreshing(false);
-    }
-  };
-
-  const handleRefreshSingleAccount = async (account: Account) => {
-    setAccountRefreshingId(account.id);
-    try {
-      const data = await refreshAccounts([account.access_token]);
-      setAccounts(normalizeAccounts(data.items));
-      setSelectedIds((prev) => prev.filter((id) => data.items.some((item) => item.id === id)));
-      if (data.errors.length > 0) {
-        const firstError = data.errors[0]?.error;
-        toast.error(firstError || "刷新账号失败");
-      } else {
-        toast.success("账号信息已刷新");
-      }
-    } catch (error) {
-      const message = error instanceof Error ? error.message : "刷新账号失败";
-      toast.error(message);
-    } finally {
-      setAccountRefreshingId(null);
     }
   };
 
@@ -957,7 +936,6 @@ export default function AccountsPage() {
                     const imageGenLimit = extractImageGenLimit(account);
                     const imageGenRemaining = liveQuota?.image_gen_remaining ?? imageGenLimit.remaining;
                     const imageGenRestore = formatRestoreAt(liveQuota?.image_gen_reset_after || imageGenLimit.resetAfter);
-                    const isAccountRefreshing = accountRefreshingId === account.id;
                     const isQuotaRefreshing = quotaRefreshingId === account.id;
 
                     return (
@@ -1075,14 +1053,6 @@ export default function AccountsPage() {
                               disabled={isUpdating}
                             >
                               <Pencil className="size-4" />
-                            </button>
-                            <button
-                              type="button"
-                              className="rounded-lg p-2 transition hover:bg-stone-100 hover:text-stone-700"
-                              onClick={() => void handleRefreshSingleAccount(account)}
-                              disabled={isRefreshing || isAccountRefreshing}
-                            >
-                              <RefreshCw className={cn("size-4", isAccountRefreshing ? "animate-spin" : "")} />
                             </button>
                             <button
                               type="button"
