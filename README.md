@@ -41,6 +41,13 @@ ChatGpt Image Studio 是一个单仓库交付的图片工作流项目：
 - Node.js `24+`
 - npm `10+`
 
+## 获取项目
+
+```bash
+git clone https://github.com/peiyizhi0724/ChatGpt-Image-Studio.git
+cd ChatGpt-Image-Studio
+```
+
 ## 快速开始
 
 ### 1. 准备本地配置

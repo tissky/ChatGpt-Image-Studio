@@ -9,9 +9,9 @@ echo "[1/4] Running backend tests..."
 cd "$BACKEND_DIR"
 go test ./...
 
-echo "[2/4] Ensuring frontend dependencies..."
+echo "[2/5] Ensuring frontend dependencies..."
 cd "$WEB_DIR"
-if [ ! -d node_modules ]; then
+if [ ! -x node_modules/.bin/tsc ] || [ ! -x node_modules/.bin/eslint ] || [ ! -x node_modules/.bin/next ]; then
   npm ci
 fi
 
