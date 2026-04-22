@@ -225,6 +225,10 @@ docker compose up --build
 - Docker 交付：`Dockerfile` 与 `docker-compose.yml`
 - 安全反馈说明：`SECURITY.md`
 
+## 社区支持
+
+- Linux.do 社区：<https://linux.do/>
+
 ## 许可证
 
 本仓库使用 MIT 许可证，详见 [LICENSE](LICENSE)。
